@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthContext } from "./context/AuthContext";
 import Home from "./pages/Home";
@@ -26,6 +27,7 @@ function App() {
           element={!authUser ? <Login /> : <Navigate to={"/"} />}
         />
       </Routes>
+      <Toaster />
     </div>
   );
 }
