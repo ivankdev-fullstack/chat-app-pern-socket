@@ -1,9 +1,15 @@
 import express from "express";
+import {
+  getMessagesByConversation,
+  getSidebarUsers,
+  sendMessage,
+} from "../controllers/message.controller.js";
+import protectRoute from "../middlewares/protect-route.middleware.js";
 
 const router = express.Router();
 
-router.get("/conversation", (req, res) => {
-  res.send("Conversation route");
-});
+router.get("/sidebar-users", protectRoute, getSidebarUsers);
+router.get("/:id", protectRoute, getMessagesByConversation);
+router.post("/send/:id", protectRoute, sendMessage);
 
 export default router;
