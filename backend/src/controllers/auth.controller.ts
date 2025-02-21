@@ -17,7 +17,7 @@ const me = async (req: Request, res: Response) => {
       id: user.id,
       fullname: user.fullname,
       username: user.username,
-      profilePic: user.avatarImg,
+      avatarImg: user.avatarImg,
     });
   } catch (err: any) {
     console.log("Error in `me` controller.", err.message);
@@ -104,7 +104,6 @@ const login = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
   try {
-    // TO TEST IF COULD BE NULL
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged out successfully." });
   } catch (err: any) {

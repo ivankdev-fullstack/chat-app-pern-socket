@@ -8,7 +8,7 @@ import protectRoute from "../middlewares/protect-route.middleware.js";
 
 const router = express.Router();
 
-router.get("/sidebar-users", protectRoute, getSidebarUsers);
+router.get("/conversations", protectRoute, getSidebarUsers);
 router.get("/:id", protectRoute, getMessagesByConversation);
 router.post("/send/:id", protectRoute, sendMessage);
 
