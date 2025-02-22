@@ -10,14 +10,19 @@ const useSendMessage = () => {
     if (!selectedConversation) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/messages/send/${selectedConversation.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-        credentials: "include"
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/api/messages/send/${
+          selectedConversation.id
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 

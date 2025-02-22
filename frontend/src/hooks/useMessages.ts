@@ -12,9 +12,14 @@ const useMessages = () => {
       setLoading(true);
       setMessages([]);
       try {
-        const res = await fetch(`/api/messages/${selectedConversation.id}`, {
-          credentials: "include",
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/api/messages/${
+            selectedConversation.id
+          }`,
+          {
+            credentials: "include",
+          }
+        );
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "An error occurred");
         setMessages(data);
