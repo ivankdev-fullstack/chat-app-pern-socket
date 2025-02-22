@@ -10,7 +10,10 @@ const useConversations = () => {
     const getConversations = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/messages/conversations");
+        const res = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/api/messages/conversations`,
+          { credentials: "include" }
+        );
         const data = await res.json();
         if (data.error) {
           throw new Error(data.error);

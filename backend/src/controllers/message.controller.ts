@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import { getReceiverSocketId, io } from "../app.js";
 import prisma from "../db/prisma.js";
-import { getReceiverSocketId, io } from "../socket/socket.js";
 
 const getSidebarUsers = async (req: Request, res: Response) => {
   try {

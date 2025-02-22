@@ -18,7 +18,7 @@ const SocketContext = createContext<ISocketContext | undefined>(undefined);
 
 export const useSocketContext = (): ISocketContext => {
   const context = useContext(SocketContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error(
       "useSocketContext must be used within a SocketContextProvider"
     );
@@ -26,46 +26,44 @@ export const useSocketContext = (): ISocketContext => {
   return context;
 };
 
-const socketURL =
-  import.meta.env.MODE === "development"
-    ? import.meta.env.VITE_LOCAL_SERVER_URL!
-    : "/";
+const socketURL = import.meta.env.VITE_SERVER_URL;
 
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const socketRef = useRef<Socket | null>(null);
-
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const { authUser, isLoading } = useAuthContext();
 
   useEffect(() => {
     if (authUser && !isLoading) {
-      const socket = io(socketURL, {
+      const newSocket = io(socketURL, {
         query: {
           userId: authUser.id,
         },
-        transports: ["websocket"],
+        withCredentials: true,
       });
-      socketRef.current = socket;
 
-      socket.on("getOnlineUsers", (users: string[]) => {
-        console.log({ users });
+      socketRef.current = socket;
+      setSocket(newSocket);
+
+      newSocket.on("getOnlineUsers", (users: string[]) => {
         setOnlineUsers(users);
       });
 
       return () => {
-        socket.close();
+        newSocket.disconnect();
         socketRef.current = null;
+        setSocket(null);
       };
-    } else if (!authUser && !isLoading) {
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-      }
+    } else if (!authUser && !isLoading && socketRef.current) {
+      socketRef.current.disconnect();
+      socketRef.current = null;
+      setSocket(null);
     }
-  }, [authUser, isLoading]);
+  }, [authUser?.id, isLoading]);
 
   return (
-    <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
       {children}
     </SocketContext.Provider>
   );

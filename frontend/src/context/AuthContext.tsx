@@ -34,10 +34,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
+  console.log(`${import.meta.env.VITE_SERVER_URL}/api/auth/me`);
+
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
-        const res = await fetch("/api/auth/me");
+        const res = await fetch(
+          `${import.meta.env.VITE_SERVER_URL}/api/auth/me`,
+          { credentials: "include" }
+        );
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error);
