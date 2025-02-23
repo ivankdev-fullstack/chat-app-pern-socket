@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSocketContext } from "../context/SocketContext";
 import { ConversationType } from "../types/types";
 
 const useConversations = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState<ConversationType[]>([]);
+  const { onlineUsers } = useSocketContext();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -27,7 +29,7 @@ const useConversations = () => {
     };
 
     getConversations();
-  }, []);
+  }, [onlineUsers]);
 
   return { loading, conversations };
 };

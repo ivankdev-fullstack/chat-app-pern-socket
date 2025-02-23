@@ -1,35 +1,17 @@
-import { useAuthContext } from "../../context/AuthContext";
-import useConversation from "../../hooks/useConversation";
 import { MessageType } from "../../types/types";
 import { extractTime } from "../../utils/extractTime";
 
 const Message = ({ message }: { message: MessageType }) => {
-  const { authUser } = useAuthContext();
-  const { selectedConversation } = useConversation();
-
-  const fromMe = message?.senderId === authUser?.id;
-
-  const img = fromMe ? authUser?.avatarImg : selectedConversation?.avatarImg;
-  const chatClass = fromMe ? "chat-end" : "chat-start";
-
-  const bubbleBg = fromMe ? "bg-blue-500" : "";
-  const shakeClass = message.shouldShake ? "shake" : "";
-
   return (
-    <div className={`chat ${chatClass}`}>
-      <div className="hidden md:block chat-image avatar">
-        <div className="w-6 md:w-10 rounded-full">
-          <img src={img} />
-        </div>
+    <div className="flex gap-2 justify-end">
+      <div className="text-white bg-sky-600 text-sm px-2 py-1 rounded-md rounded-br-none flex flex-col items-end">
+        <p className="min-w-[50px] max-w-[400px] whitespace-pre-wrap break-words h-auto text-end">
+          {message.content}
+        </p>
+        <p className="opacity-50 text-xs text-white text-start w-full">
+          {extractTime(message.createdAt)}
+        </p>
       </div>
-      <p
-        className={`chat-bubble text-white ${bubbleBg} ${shakeClass} text-sm md:text-md`}
-      >
-        {message.content}
-      </p>
-      <span className="chat-footer opacity-50 text-xs flex gap-1 items-center text-white">
-        {extractTime(message.createdAt)}
-      </span>
     </div>
   );
 };

@@ -49,6 +49,9 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       newSocket.on("getOnlineUsers", (users: string[]) => {
         setOnlineUsers(users);
       });
+      newSocket.on("connectNewUser", () => {
+        console.log("worked");
+      });
 
       return () => {
         newSocket.disconnect();

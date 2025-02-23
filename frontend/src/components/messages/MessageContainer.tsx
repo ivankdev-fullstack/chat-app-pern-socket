@@ -1,23 +1,20 @@
+import { MessageCircle } from "lucide-react";
 import { useAuthContext } from "../../context/AuthContext";
 import useConversation from "../../hooks/useConversation";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
 
-import { MessageCircle } from "lucide-react";
-
 const MessageContainer = () => {
   const { selectedConversation } = useConversation();
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col justify-end">
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
-          <div className="flex justify-center bg-slate-500 px-4 py-2 mb-2">
-            <span className="text-gray-900 font-bold">
-              {selectedConversation.fullname}
-            </span>
+          <div className="flex justify-center bg-neutral-800 px-4 py-2 text-white font-bold">
+            {selectedConversation.fullname}
           </div>
 
           <Messages />

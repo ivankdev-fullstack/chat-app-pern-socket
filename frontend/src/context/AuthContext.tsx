@@ -34,8 +34,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  console.log(`${import.meta.env.VITE_SERVER_URL}/api/auth/me`);
-
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
